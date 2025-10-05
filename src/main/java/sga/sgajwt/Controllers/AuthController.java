@@ -5,9 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import sga.sgajwt.Dtos.AuthResponse;
+import sga.sgajwt.Dtos.LoginDto;
 import sga.sgajwt.Dtos.MessageDto;
 import sga.sgajwt.Dtos.RegisterDto;
 import sga.sgajwt.Enums.RolesName;
+import sga.sgajwt.JWT.JwtUtils;
 import sga.sgajwt.Models.Role;
 import sga.sgajwt.Models.UserEntity;
 import sga.sgajwt.Repository.UserEntityRepository;
@@ -16,7 +19,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,12 +36,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Slf4j
 public class AuthController {
 
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserEntityRepository userEntityRepository;
+
+    @Autowired
+    private JwtUtils JwtUtils;
+
+    @Autowired
+    private AuthenticationManager authManager;
 
     @GetMapping("/")
     public String welcomen() {
@@ -73,6 +86,24 @@ public class AuthController {
         userEntityRepository.save(userEntity);
 
         return ResponseEntity.ok().body(MessageDto.builder().message("Usuario Creado Satisfatoriamente").build());
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> inicioSession(@Valid @RequestBody LoginDto loginDto,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        Authentication authentication = authManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+
+        final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        final String token = JwtUtils.generateToken(userDetails.getUsername());
+
+        return ResponseEntity.ok().body(AuthResponse.builder().token(token).build());
     }
 
 }
