@@ -1,4 +1,4 @@
-package sga.sgajwt.Services;
+package sga.sgajwt.Auth.Services;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import sga.sgajwt.Models.UserEntity;
-import sga.sgajwt.Repository.UserEntityRepository;
+import sga.sgajwt.Auth.Models.UserEntity;
+import sga.sgajwt.Auth.Repository.UserEntityRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{

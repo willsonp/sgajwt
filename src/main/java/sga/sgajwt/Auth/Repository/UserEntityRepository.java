@@ -1,11 +1,11 @@
-package sga.sgajwt.Repository;
+package sga.sgajwt.Auth.Repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import sga.sgajwt.Models.UserEntity;
+import sga.sgajwt.Auth.Models.UserEntity;
 
 @Repository
 public interface UserEntityRepository extends JpaRepository<UserEntity,Integer> {

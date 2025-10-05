@@ -1,4 +1,4 @@
-package sga.sgajwt.Security;
+package sga.sgajwt.Auth.Security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,10 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import sga.sgajwt.JWT.JwtAuthFilter;
-import sga.sgajwt.JWT.JwtAutorizationFilter;
-import sga.sgajwt.JWT.JwtUtils;
-import sga.sgajwt.Services.UserDetailsServiceImpl;
+import sga.sgajwt.Auth.JWT.JwtAuthFilter;
+import sga.sgajwt.Auth.JWT.JwtAutorizationFilter;
+import sga.sgajwt.Auth.JWT.JwtUtils;
+import sga.sgajwt.Auth.Services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableMethodSecurity

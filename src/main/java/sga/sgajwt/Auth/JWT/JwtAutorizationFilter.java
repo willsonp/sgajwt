@@ -1,4 +1,4 @@
-package sga.sgajwt.JWT;
+package sga.sgajwt.Auth.JWT;
 
 import java.io.IOException;
 
@@ -15,7 +15,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import sga.sgajwt.Services.UserDetailsServiceImpl;
+import sga.sgajwt.Auth.Services.UserDetailsServiceImpl;
 
 @Component
 public class JwtAutorizationFilter extends OncePerRequestFilter {

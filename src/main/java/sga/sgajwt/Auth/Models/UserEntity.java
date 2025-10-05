@@ -1,4 +1,4 @@
-package sga.sgajwt.Models;
+package sga.sgajwt.Auth.Models;
 
 import java.util.Set;
 

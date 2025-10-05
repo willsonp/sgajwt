@@ -1,19 +1,19 @@
-package sga.sgajwt.Controllers;
+package sga.sgajwt.Auth.Controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import sga.sgajwt.Dtos.AuthResponse;
-import sga.sgajwt.Dtos.LoginDto;
-import sga.sgajwt.Dtos.MessageDto;
-import sga.sgajwt.Dtos.RegisterDto;
-import sga.sgajwt.Enums.RolesName;
-import sga.sgajwt.JWT.JwtUtils;
-import sga.sgajwt.Models.Role;
-import sga.sgajwt.Models.UserEntity;
-import sga.sgajwt.Repository.UserEntityRepository;
+import sga.sgajwt.Auth.Dtos.AuthResponse;
+import sga.sgajwt.Auth.Dtos.LoginDto;
+import sga.sgajwt.Auth.Dtos.MessageDto;
+import sga.sgajwt.Auth.Dtos.RegisterDto;
+import sga.sgajwt.Auth.Enums.RolesName;
+import sga.sgajwt.Auth.JWT.JwtUtils;
+import sga.sgajwt.Auth.Models.Role;
+import sga.sgajwt.Auth.Models.UserEntity;
+import sga.sgajwt.Auth.Repository.UserEntityRepository;
 
 import java.util.Set;
 import java.util.stream.Collectors;

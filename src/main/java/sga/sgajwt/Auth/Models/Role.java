@@ -1,4 +1,4 @@
-package sga.sgajwt.Models;
+package sga.sgajwt.Auth.Models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import sga.sgajwt.Enums.RolesName;
+import sga.sgajwt.Auth.Enums.RolesName;
 
 @Entity
 @Table(name="role")

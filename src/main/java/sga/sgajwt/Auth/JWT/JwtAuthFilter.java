@@ -1,4 +1,4 @@
-package sga.sgajwt.JWT;
+package sga.sgajwt.Auth.JWT;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import sga.sgajwt.Models.UserEntity;
+import sga.sgajwt.Auth.Models.UserEntity;
 
 @Slf4j
 public class JwtAuthFilter extends UsernamePasswordAuthenticationFilter {

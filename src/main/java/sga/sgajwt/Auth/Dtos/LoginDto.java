@@ -1,6 +1,4 @@
-package sga.sgajwt.Dtos;
-
-import java.util.Set;
+package sga.sgajwt.Auth.Dtos;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -12,24 +10,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterDto {
+public class LoginDto {
 
     @NotBlank
     private String username;
 
     @NotBlank
     private String password;
-
-    @NotBlank
-    // @Email
-    private String email;
-
-    @NotBlank
-    private String first_name;
-    
-    @NotBlank
-    private String last_name;
-
-    private Set<String> roles;
 
 }

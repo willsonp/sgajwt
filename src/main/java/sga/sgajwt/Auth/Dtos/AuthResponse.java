@@ -1,4 +1,4 @@
-package sga.sgajwt.Dtos;
+package sga.sgajwt.Auth.Dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package sga.sgajwt.Enums;
+package sga.sgajwt.Auth.Enums;
 
 public enum RolesName {
 

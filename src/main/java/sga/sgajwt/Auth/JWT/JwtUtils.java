@@ -1,4 +1,4 @@
-package sga.sgajwt.JWT;
+package sga.sgajwt.Auth.JWT;
 
 import java.security.Key;
 import java.util.Date;
