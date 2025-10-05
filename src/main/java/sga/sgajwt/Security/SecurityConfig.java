@@ -43,10 +43,6 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
             )
-            // .addFilter(jwtAuthFilter)               
-            // .exceptionHandling(exception -> exception
-            // .authenticationEntryPoint(jwtComponentEntryPoint))           
-
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilter(jwtAuthFilter)            
