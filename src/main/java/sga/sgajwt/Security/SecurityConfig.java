@@ -1,24 +1,34 @@
 package sga.sgajwt.Security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import sga.sgajwt.JWT.JwtAuthFilter;
+import sga.sgajwt.JWT.JwtUtils;
+import sga.sgajwt.Services.UserDetailsServiceImpl;
 
 @Configuration
 public class SecurityConfig {
 
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception{
+
+     JwtAuthFilter jwtAuthFilter = new JwtAuthFilter(jwtUtils);  
+     jwtAuthFilter.setAuthenticationManager(authenticationManager);
 
      return http
             .csrf(csrf -> csrf.disable())
@@ -32,24 +42,24 @@ public class SecurityConfig {
 
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .httpBasic(Customizer.withDefaults())    
+            .addFilter(jwtAuthFilter)
             .build();    
             // .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 
-    @Bean
-    UserDetailsService userDetailsService(){
+    // @Bean
+    // UserDetailsService userDetailsService(){
 
-        InMemoryUserDetailsManager userMemory = new InMemoryUserDetailsManager();
-        userMemory.createUser(User.withUsername("wperez")
-        .password(passwordEncoder().encode("Encrypted"))
-        .roles()
-        .build());
+    //     InMemoryUserDetailsManager userMemory = new InMemoryUserDetailsManager();
+    //     userMemory.createUser(User.withUsername("wperez")
+    //     .password(passwordEncoder().encode("Encrypted"))
+    //     .roles()
+    //     .build());
 
-        return userMemory;
+    //     return userMemory;
 
-    }
+    // }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -60,7 +70,7 @@ public class SecurityConfig {
     AuthenticationManager authenticationManager(HttpSecurity httpSecurity,PasswordEncoder passwordEncoder) throws Exception{
 
             return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
-            .userDetailsService(userDetailsService())
+            .userDetailsService(userDetailsService)
             .passwordEncoder(passwordEncoder)
             .and()
             .build();

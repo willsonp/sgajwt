@@ -15,7 +15,7 @@ import sga.sgajwt.Models.UserEntity;
 import sga.sgajwt.Repository.UserEntityRepository;
 
 @Service
-public class UserEntityService implements UserDetailsService{
+public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Autowired
     UserEntityRepository userRepository;
