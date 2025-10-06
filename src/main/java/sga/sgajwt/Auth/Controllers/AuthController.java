@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -88,21 +89,31 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> inicioSession(@Valid @RequestBody LoginDto loginDto,BindingResult bindingResult) {
+    public ResponseEntity<?> inicioSession(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-           return ResponseEntity.badRequest().body(
+            return ResponseEntity.badRequest().body(
                     MessageDto.builder().message("Se produjo un Error los campos no cumplen los Criterios").build());
         }
 
-        Authentication authentication = authManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+        if (userEntityRepository.existsByUsername(loginDto.getUsername())) {
 
-        final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            Authentication authentication = authManager
+                    .authenticate(
+                            new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
 
-        final String token = JwtUtils.generateToken(userDetails.getUsername());
+            final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-        return ResponseEntity.ok().body(AuthResponse.builder().token(token).build());
+            final String token = JwtUtils.generateToken(userDetails.getUsername());
+            
+            return authentication.isAuthenticated()
+                    ? ResponseEntity.ok().body(AuthResponse.builder().token(token).build())
+                    : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                            MessageDto.builder().message("Password Incorrect or Not Match").build());
+        } else {
+            return ResponseEntity.badRequest().body(
+                    MessageDto.builder().message("UserName  Does Not Exists in the DB").build());
+        }
     }
 
 }
