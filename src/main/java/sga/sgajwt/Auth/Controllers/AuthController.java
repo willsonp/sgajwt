@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -89,11 +88,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> inicioSession(@Valid @RequestBody LoginDto loginDto,
-            BindingResult bindingResult) {
+    public ResponseEntity<?> inicioSession(@Valid @RequestBody LoginDto loginDto,BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+           return ResponseEntity.badRequest().body(
+                    MessageDto.builder().message("Se produjo un Error los campos no cumplen los Criterios").build());
         }
 
         Authentication authentication = authManager
