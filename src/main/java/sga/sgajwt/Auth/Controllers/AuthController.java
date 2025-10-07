@@ -27,14 +27,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:4200") 
 @Slf4j
-public class AuthController {
+class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -92,19 +94,20 @@ public class AuthController {
     public ResponseEntity<?> inicioSession(@Valid @RequestBody LoginDto loginDto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
+            
             return ResponseEntity.badRequest().body(
                     MessageDto.builder().message("Se produjo un Error los campos no cumplen los Criterios").build());
         }
 
-        if (userEntityRepository.existsByUsername(loginDto.getUsername())) {
+        if (userEntityRepository.existsByUsername(loginDto.getUsername().trim())) {
 
             Authentication authentication = authManager
                     .authenticate(
-                            new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
+                            new UsernamePasswordAuthenticationToken(loginDto.getUsername().trim(), loginDto.getPassword().trim()));
 
             final UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            final String token = JwtUtils.generateToken(userDetails.getUsername());
+            final String token = JwtUtils.generateToken(userDetails.getUsername().trim());
             
             return authentication.isAuthenticated()
                     ? ResponseEntity.ok().body(AuthResponse.builder().token(token).build())
