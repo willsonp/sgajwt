@@ -25,7 +25,7 @@ import sga.sgajwt.Auth.JWT.JwtAutorizationFilter;
 public class SecurityConfig {
 
     @Autowired
-    private final AuthenticationProvider authProvider;   
+    private AuthenticationProvider authProvider;   
     
     @Autowired
     private JwtAutorizationFilter jwtAutorizationFilter;
